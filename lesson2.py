@@ -115,19 +115,29 @@ cut_img = new_img[0:300, 0:150]
 # На оригінальному зображенні, усі пікселі які не
 # відповідають масці замініть на 0 та виведіть результат
 
-mask = new_img > 128
-print(mask)
-print(mask.shape)
-print(mask.dtype)
+# mask = new_img > 128
+# print(mask)
+# print(mask.shape)
+# print(mask.dtype)
+#
+# cv2.imshow('img', new_img)
+#
+# new_img[~mask] = 0
+# cv2.imshow('new', new_img)
+#
+# new_img[mask] = 255
+# cv2.imshow('new', new_img)
 
-cv2.imshow('img', new_img)
-
-new_img[~mask] = 0
-cv2.imshow('new', new_img)
-
-new_img[mask] = 255
-cv2.imshow('new', new_img)
-
+# mask = new_img > 128
+#
+# mask = mask.astype(np.uint8)
+# print(mask)
+# print(mask.shape)
+# print(mask.dtype)
+#
+# mask = mask * 255
+#
+# cv2.imshow('mask', mask)
 
 
 cv2.waitKey(0)

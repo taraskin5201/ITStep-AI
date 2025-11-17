@@ -1,97 +1,106 @@
-# шуми та згортка
-import cv2
-import numpy as np
-
-img = cv2.imread("data/lesson3/castello_noised.png")
-
-
-# згортка
-# математика - 180 балів - 60%
-# укр мова -- 170 балів -- 20%
-# анг мова -- 190 балів -- 20%
-
-# ядро згортки(фільтр згортки)
-# масив з коефіцієнтами для пікселів
-
-# kernel = np.array([[0.05, 0.1, 0.05],
-#                    [0.1,  0.4,  0.1],
-#                    [0.05, 0.1, 0.05]])
+# # дз
+# result1 = img.copy()
+# result1[:] = 0
 #
-# new_img = cv2.filter2D(img,  # оригільне зображення
-#                        -1,  # згортка для кожного кольору
-#                        kernel  # ядро з коефіцієнтами
-#                        )
+# # те саме(створити масив 0 такого ж розміру як img)
+# result1 = np.zero_like(img)
 #
-# cv2.imshow("result", new_img)
+# # проблема зі знаками \
+# r"C:\ITSTEP\ITStep-AI\data\lesson1\baboo.jpg"
 
-# гаусове розмиття
 
-# new_img1 = cv2.GaussianBlur(img,  # оригільне зображення
-#                            ksize=(3, 3), # розмір ядра\фільра\рамки
-#                            sigmaX=1  # чим більше тим сильніше розмиття
-#                            )
+# # колір
+# import cv2
 #
-# cv2.imshow("result1", new_img1)
+# # читати як чорно біле
+# img = cv2.imread('data/lesson2/lego.jpg', cv2.IMREAD_GRAYSCALE)
+# img = cv2.resize(img, (500, 500))
 #
-# new_img100 = cv2.GaussianBlur(img,  # оригільне зображення
-#                            ksize=(3, 3), # розмір ядра\фільра\рамки
-#                            sigmaX=100  # чим більше тим сильніше розмиття
-#                            )
+# print(img.shape)
+# print(img.dtype)
 #
-# cv2.imshow("result100", new_img100)
-# cv2.imshow("original", img)
-
-# # фільтри для різних sigmaX
-# kernel1D = cv2.getGaussianKernel(3, sigma=0)
-# kernel2D = kernel1D @ kernel1D.T
+# cv2.imshow('gray', img)
 #
-# print(kernel2D)
-
-# двосторонній фільтр
-
-# new_img = cv2.bilateralFilter(img,  # оригільне зображення
-#                               d=5,  # розмір ядра\фільра\рамки
-#                               sigmaColor=75,  # впливає на коефіцієнт за кольором
-#                               sigmaSpace=75,  # вплива на коефіцієнти як в гауса
-#                               )
+# # читати як кольорове
+# img = cv2.imread('data/lesson2/lego.jpg', cv2.IMREAD_COLOR)
+# img = cv2.resize(img, (500, 500))
 #
-# cv2.imshow("bilateral", new_img)
-# cv2.imshow("original", img)
+# print(img.shape)
+# print(img.dtype)
+#
+# # піксель формат bgr
+# print(img[220, 220]) # [60 75 230]
+#
+# cv2.imshow('color', img)
+#
+# # дістати черіоний колір з зображення
+# # img.shape = (рядки, стовпчики, колір)
+# red_part = img[:, :, 2]
+# green_part = img[:, :, 1]
+# blue_part = img[:, :, 0]
+#
+# print(red_part.shape)
+# print(red_part.dtype)
+#
+# # якщо в shape 2 числа -- показує як чорнобіле зображення
+# cv2.imshow('wrong red', red_part)
+#
+# # правильно
+# red_part = img.copy()
+# # первести синій та зелений в 0
+# red_part[:, :, 0] = 0  # blue
+# red_part[:, :, 1] = 0  # blue
+#
+# cv2.imshow('red', red_part)
 # cv2.waitKey(0)
+#
+#
+# # # rgb(bgr)
+# # import utils
+# #
+# # utils.lesson2_bgr_range()
 
-cv2.ADAPTIVE_THRESH_GAUSSIAN_C
-# бінарізація(звичайна)
+# кольоровий простір hsv
+# h -- колір  (hue)  -- кут / 2
+# s -- насиченість  (saturation)
+# v -- яскравість   (value)
 
-img = cv2.imread("data/lesson3/darken_page.jpg")
+# import utils
+#
+# utils.lesson2_hsv_range()
 
-# перевести в чорнобілий формат
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-# обираємо поріг
-threshold = 70
-
-# всі пікселі які менше зробити 0
-# всі пікселі які більше зробити 255
-
-result = gray.copy()
-
-mask = gray > threshold
-
-result[mask] = 255
-result[~mask] = 0
+import cv2
 
 
-# бінарізація(адаптивна)
-result2 = cv2.adaptiveThreshold(gray,  # оригільне зображення(чорнобіле)
-                                255, # інтенсивність пікселів білого кольору
-                                cv2.ADAPTIVE_THRESH_GAUSSIAN_C,  # алгоритм як рахувати threshold
-                                cv2.THRESH_BINARY,  # тип бінарізації
-                                11,  # розмір ядра\фільра\рамки
-                                2,  # наскільки сильною є бінарізацію
-                                )
+img = cv2.imread('data/lesson2/lego.jpg', cv2.IMREAD_COLOR)
+img = cv2.resize(img, (500, 500))
 
-cv2.imshow("original", img)
-cv2.imshow("gray", gray)
-cv2.imshow("result", result)
-cv2.imshow("result2", result2)
+# img -- bgr
+cv2.imshow('bgr', img)
+
+# перевести в hsv
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+print(hsv.shape)
+print(hsv.dtype)
+
+# # думає що hsv -- bgr
+# cv2.imshow('hsv', hsv)
+
+# h -- 100-130
+# s -- 150-255
+# v -- 140-255
+mask_blue = cv2.inRange(
+    hsv,
+    (100, 150, 140), # нижні межі
+    (130, 255, 255)  # верхні межі
+)
+
+print(mask_blue.shape)
+print(mask_blue.dtype)
+
+cv2.imshow('mask_blue', mask_blue)
+
 cv2.waitKey(0)
+
+

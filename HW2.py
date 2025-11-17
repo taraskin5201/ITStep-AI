@@ -1,7 +1,7 @@
 # Завдання 1
 
-import cv2
-import numpy as np
+# import cv2
+# import numpy as np
 
 # # Відкрийте зображення data/Lenna.png
 # img = cv2.imread('data/lesson1/Lenna.png')

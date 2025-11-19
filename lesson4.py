@@ -118,93 +118,93 @@ import numpy as np
 #  повторіть бінарізацію, але перед тим застосуйте bilateral
 # filter
 
-# import cv2
-# import utils
-# import numpy as np
-#
-# img = cv2.imread('data/lesson3/notes.png')
-#
-# #  проведіть бінарізацію(звичайну та адаптивну)
-# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-#
-# # проста бінарізація
-# threshold = 100
-#
-# res = gray.copy()
-# mask = res > threshold
-# res[mask] = 255
-# res[~mask] = 0
-#
-# cv2.imshow('res-binary', res)
-# cv2.imshow('original', img)
-# cv2.waitKey(0)
-#
-# # адаптивна бінарізація
-# res = cv2.adaptiveThreshold(
-#     gray,
-#     255,  #  інтенчивність для білого кольору
-#     cv2.ADAPTIVE_THRESH_GAUSSIAN_C,   # фурмула згортки(гаус)
-#     cv2.THRESH_BINARY,    # це не чіпаємо
-#     11,    # розмір ядра для згортки
-#     4           # наскільки чутливою має бути бінарізація
-# )
-#
-# cv2.imshow('res-adapt', res)
-# cv2.imshow('original', img)
-# cv2.waitKey(0)
-#
-#
-# #  застосуйте розмиття(гаусове) візьміть ядра 3, 5, 11 та
-# # sigmaX 0, 2, 10
-#
-# # гаусове розмиття
-# res1 = cv2.GaussianBlur(
-#     img,
-#     (3, 3),   # розмір ядра
-#     0       # чим більше тим більше розвиття
-# )
-#
-# res2 = cv2.GaussianBlur(
-#     img,
-#     (5, 5),   # розмір ядра
-#     2       # чим більше тим більше розвиття
-# )
-#
-# res3 = cv2.GaussianBlur(
-#     img,
-#     (11, 11),   # розмір ядра
-#     10       # чим більше тим більше розвиття
-# )
-#
-# cv2.imshow('Gause3_0', res1)
-# cv2.imshow('Gause5_2', res2)
-# cv2.imshow('Gause11_10', res3)
-# cv2.waitKey(0)
-#
-# #  повторіть бінарізацію, але перед тим застосуйте bilateral
-# # filter
-#
-# bilateral = cv2.bilateralFilter(
-#     img,
-#     d=5,  # розмір ядра
-#     sigmaColor=75,   # наскільки зберігати різкість кольору
-#     sigmaSpace=75,   # те ж саме що й в GaussianBlur
-# )
-#
-# cv2.imshow('res-binary-BEFORE', bilateral)
-#
-# res4 = cv2.adaptiveThreshold(
-#     gray,
-#     255,  #  інтенчивність для білого кольору
-#     cv2.ADAPTIVE_THRESH_GAUSSIAN_C,   # фурмула згортки(гаус)
-#     cv2.THRESH_BINARY,    # це не чіпаємо
-#     11,    # розмір ядра для згортки
-#     2           # наскільки чутливою має бути бінарізація
-# )
-#
-# cv2.imshow('res-binary-AFETR', res4)
-# cv2.imshow('original', img)
-# cv2.waitKey(0)
+import cv2
+import utils
+import numpy as np
+
+img = cv2.imread('data/lesson3/notes.png')
+
+#  проведіть бінарізацію(звичайну та адаптивну)
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# проста бінарізація
+threshold = 100
+
+res = gray.copy()
+mask = res > threshold
+res[mask] = 255
+res[~mask] = 0
+
+cv2.imshow('res-binary', res)
+cv2.imshow('original', img)
+cv2.waitKey(0)
+
+# адаптивна бінарізація
+res = cv2.adaptiveThreshold(
+    gray,
+    255,  #  інтенчивність для білого кольору
+    cv2.ADAPTIVE_THRESH_GAUSSIAN_C,   # фурмула згортки(гаус)
+    cv2.THRESH_BINARY,    # це не чіпаємо
+    11,    # розмір ядра для згортки
+    4           # наскільки чутливою має бути бінарізація
+)
+
+cv2.imshow('res-adapt', res)
+cv2.imshow('original', img)
+cv2.waitKey(0)
+
+
+#  застосуйте розмиття(гаусове) візьміть ядра 3, 5, 11 та
+# sigmaX 0, 2, 10
+
+# гаусове розмиття
+res1 = cv2.GaussianBlur(
+    img,
+    (3, 3),   # розмір ядра
+    0       # чим більше тим більше розвиття
+)
+
+res2 = cv2.GaussianBlur(
+    img,
+    (5, 5),   # розмір ядра
+    2       # чим більше тим більше розвиття
+)
+
+res3 = cv2.GaussianBlur(
+    img,
+    (11, 11),   # розмір ядра
+    10       # чим більше тим більше розвиття
+)
+
+cv2.imshow('Gause3_0', res1)
+cv2.imshow('Gause5_2', res2)
+cv2.imshow('Gause11_10', res3)
+cv2.waitKey(0)
+
+#  повторіть бінарізацію, але перед тим застосуйте bilateral
+# filter
+
+bilateral = cv2.bilateralFilter(
+    gray,
+    d=5,  # розмір ядра
+    sigmaColor=75,   # наскільки зберігати різкість кольору
+    sigmaSpace=75,   # те ж саме що й в GaussianBlur
+)
+
+cv2.imshow('res-binary-BEFORE', bilateral)
+
+res4 = cv2.adaptiveThreshold(
+    bilateral,
+    255,  #  інтенчивність для білого кольору
+    cv2.ADAPTIVE_THRESH_GAUSSIAN_C,   # фурмула згортки(гаус)
+    cv2.THRESH_BINARY,    # це не чіпаємо
+    11,    # розмір ядра для згортки
+    2           # наскільки чутливою має бути бінарізація
+)
+
+cv2.imshow('res-binary-AFETR', res4)
+cv2.imshow('original', img)
+cv2.waitKey(0)
 
 
 

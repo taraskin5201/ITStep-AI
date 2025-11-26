@@ -51,24 +51,46 @@ conf = result.boxes.conf
 print(conf)
 
 
-# відео
-while True:
-    success, img = cap.read()
+# рамка(box)
+boxes = result.boxes
 
-    if not success:
-        break
+# отримати перший об'єкт
+box = boxes[0]
 
-    img = cv2.resize(img, None, fx=0.5, fy=0.5)
+print(box)
 
-    results = model.predict(img)
-    result = results[0]
+# координати
+xyxy = box.xyxy[0]
 
-    res_img = result.plot()
+# переведення координат в int
+x1, y1, x2, y2 = map(int, xyxy)
 
-    cv2.imshow('result', res_img)
+# вирізати об'єк з всього зображення
+# y -- відповідають за рядки
+# x -- відповідають за стовпчики
+roi = img[y1:y2, x1:x2]
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+cv2.imshow('object', roi)
+
+
+# # відео
+# while True:
+#     success, img = cap.read()
+#
+#     if not success:
+#         break
+#
+#     img = cv2.resize(img, None, fx=0.5, fy=0.5)
+#
+#     results = model.predict(img)
+#     result = results[0]
+#
+#     res_img = result.plot()
+#
+#     cv2.imshow('result', res_img)
+#
+#     if cv2.waitKey(1) & 0xFF == ord('q'):
+#         break
 
 
 cv2.waitKey(0)

@@ -12,6 +12,7 @@ dotenv.load_dotenv()
 # сам api key
 api_key = os.getenv('GEMINI_API_KEY')
 
+# print(api_key)
 # сама модель LMM
 import langchain
 from langchain_google_genai import GoogleGenerativeAI

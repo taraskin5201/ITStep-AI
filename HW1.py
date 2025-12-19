@@ -1,3 +1,19 @@
+# Завдання 1
+# Прочитайте файл data\lesson9\return_policy.txt
+# Та напишіть простий чат бот для відповідей на питання
+# користувачів стосовно повернення товару. Діалог завершується
+# коли користувач вводить порожній рядок.
+# Передавайте усю історію спілкування у форматі:
+# Instruction: ….
+# Human: massage1
+# AI: message2
+# Human: massage3
+# AI: message4
+# Human: massage5
+# AI:
+
+
+
 import os
 import dotenv
 from langchain_google_genai import GoogleGenerativeAI

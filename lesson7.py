@@ -1,26 +1,38 @@
 import streamlit as st
 
 
-# st.title("ITStep")
+# за замовчуванням щапускається нескіченний цикл
+# Сторінка сайту постійно оновлюється і відповідно
+# код нижче постіно запускається
+
+# # заголовок сайту
+# st.title("IT STEP ai")
 #
-# st.markdown("звичайний текст")
+# # звичайний текст
+# st.markdown("Звичайний текст. Можливо опис вашої програми")
 #
-# st.markdown("**жирний текст**")
+# # отримати повідомлення від користувача
+# user_query = st.chat_input("Ваше повідомлення")
 #
-# user_query = st.chat_input("Введіть ваш запит:")
-#
-# # st.markdown(f"Ви ввели: {user_query}")
+# # st.markdown(f"Ви ввели {user_query}")
 # #
-# # if user_query == "Привіт":
-# #     st.markdown("Привіт! Як я можу допомогти?")
+# # if user_query == 'Привіт':
+# #     st.markdown(f"Як справи")
 #
 #
-# # if user_query == None:
-# #     st.session_state["history"] = []
-# #
-# # st.session_state["history"].append(user_query)
-# #
-# # st.markdown(f"Ви ввели: {st.session_state['history']}")
+# # глобальна пам'ять в streamlit
+# # session_state -- dict з зміними
+#
+# if user_query == None:
+#     # це самий початок(користувач ще нічого не писав
+#     st.session_state['history'] = []
+#
+# # добавити user_query в історію
+# st.session_state['history'].append(user_query)
+#
+# st.markdown(f"Ви ввели {st.session_state['history']}")
+
+
 
 
 
@@ -34,15 +46,13 @@ from langchain_core.messages import (
     HumanMessage,
     AIMessage,
     SystemMessage,
-    trim_messages
 )
 
+# заголовок
+st.title("ITStep chat bot")
 
-st.title("ITStep ChatBot")
-
-# завантаження апі ключа
-dotenv.load_dotenv()
-api_key = os.getenv("GEMINI_API_KEY")
+# завантаження апі ключа за допомогою streamlit
+api_key = st.secrets.get("GEMINI_API_KEY")
 
 # створити llm
 llm = ChatGoogleGenerativeAI(
@@ -50,72 +60,35 @@ llm = ChatGoogleGenerativeAI(
     api_key=api_key,
 )
 
-# історія повідомлень
-messages = [
-    # перше повідомлення з основними інструкціями(промпт)
-    SystemMessage(
-        """
-        Ти -- ввічливий чат бот, твоя зада давити короткі та
-        чіткі відповіді на питання
-        """
-    ),
-    HumanMessage("Привіт"),
-    AIMessage("Привіт, щоб ти зотів дізнатись?"),
-    HumanMessage("Порекомендуй цікавий фільм про космос")
-]
+user_query = st.chat_input("Ваше повідомлення")
 
+# якщо це початок то створити історію в session state
+if user_query is None:
+    # історія повідомлень
+    st.session_state['history'] = [
+        # перше повідомлення з основними інструкціями(промпт)
+        SystemMessage(
+            """
+            Ти -- ввічливий чат бот, твоя задача давити короткі та
+            чіткі відповіді на питання
+            """
+        )
+    ]
 
-# дати відповідь на очтаннє повідомлення
-# враховуючи історію спілкування та основні інструкції
-
-response = llm.invoke(messages)
-
-print(type(response))
-print(response)
-print(repr(response))
-
-
-простий чатбот
-
-історія повідомлень
-на початку лише інструкції
-messages = [
-    SystemMessage(
-        """
-        Ти -- ввічливий чат бот, який імітує Толкіна. Давай короткі відповіді
-        на питання користувача
-        """
-    )
-]
-
-while True:
-    user_query = input("Ви: ")
-
-    # закіцнчуємо якщо натиснути Enter
-    if user_query == '':
-        break
-
+# якщо повідомлення введено, то дати відповідь від моделі
+if user_query:
     # переволимо повідомлення в HumanMessage
     human_message = HumanMessage(user_query)
 
     # добавляємо до історії повідомлень
-    messages.append(human_message)
+    st.session_state['history'].append(human_message)
 
     # запускаємо модель
-    response = llm.invoke(messages)
+    response = llm.invoke(st.session_state['history'])
 
     # response -- AIMessage
     # добавляємо до історії повідомлень
-    messages.append(response)
+    st.session_state['history'].append(response)
 
     # вивести відповідь
-    print(f"AI: {response.content}")
-
-    # вивести саму історії спілкування
-    print()
-    print("####ІСТОРІЯ####")
-
-    for message in messages:
-        print(repr(message))
-
-    print()
+    st.markdown(f"AI: {response.content}")

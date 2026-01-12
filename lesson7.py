@@ -91,7 +91,7 @@ if user_query:
     st.session_state['history'].append(response)
 
     # вивести відповідь
-    st.markdown(f"AI: {response.content}")
+    # st.markdown(f"AI: {response.content}")
 
 # вивести історію повідомлень
 for msg in st.session_state['history']:

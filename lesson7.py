@@ -56,7 +56,7 @@ api_key = st.secrets.get("GEMINI_API_KEY")
 
 # створити llm
 llm = ChatGoogleGenerativeAI(
-    model='gemini-2.5-flash-lite',
+    model='gemini-2.5-flash',
     api_key=api_key,
 )
 

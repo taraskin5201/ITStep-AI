@@ -92,3 +92,11 @@ if user_query:
 
     # вивести відповідь
     st.markdown(f"AI: {response.content}")
+
+# вивести історію повідомлень
+for msg in st.session_state['history']:
+    if isinstance(msg, HumanMessage):
+        st.markdown(f"Ви: {msg.content}")
+    elif isinstance(msg, AIMessage):
+        st.markdown(f"AI: {msg.content}")
+
